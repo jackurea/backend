@@ -14,6 +14,14 @@ class AuthController extends Controller
         $this->authRepo = $authRepo;
     }
 
+    /**
+     * Login endpoints validates request
+     * Return resetToken if user is authenticated
+     * @param string name
+     * @param string password
+     * @return string resetToken
+     */
+
     function login(Request $request) {
         $data = $this->authRepo->login($request);
         return response($data)        
@@ -24,6 +32,14 @@ class AuthController extends Controller
         ->header('Accept', 'application/json');
     }
 
+    /**
+     * Register endpoints validates request
+     * Return ok if user is registered
+     * @param string name
+     * @param string password
+     * @return boolean 
+     */
+
     function register(Request $request) {
         $name = $request->name;
         $pwd = $request->pwd;
@@ -31,11 +47,26 @@ class AuthController extends Controller
         return $this->authRepo->register($request);
     }
 
-    function forget(Request $request) {
+
+    /**
+     * forget endpoints
+     * Return resetToken
+     * @param string name
+     * @return string resetToken
+     */
+
+     function forget(Request $request) {
         return $this->authRepo->forget($request);
     }
+
+    /**
+     * Reset endpoints
+     * @param string name
+     * @param string password
+     */
 
     function reset(Request $request) {
         return $this->authRepo->reset($request);
     }
+
 }
