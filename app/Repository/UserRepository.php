@@ -17,7 +17,7 @@ class UserRepository {
     }
 
     public function list() {
-        $data = DB::table('user')->find();
+        $data = DB::table('user')->get();
         return $data;
     }
 
@@ -30,7 +30,7 @@ class UserRepository {
     }
 
     public function delete($name) {
-        DB::table('user')->where('name', '=', $name)->remove();
+        DB::table('user')->where('name', '=', $name)->delete();
         return "OK";
     }
 }
