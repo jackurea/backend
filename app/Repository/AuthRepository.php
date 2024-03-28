@@ -6,6 +6,7 @@ use App\Models\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class AuthRepository {
 
@@ -39,4 +40,24 @@ class AuthRepository {
         return "OK";
     }
 
+    function forget(Request $request) {
+        $user = self::MODEL;
+        $user = new $user;
+        $user->name = $request->name;
+        $hash = md5($request->name . Carbon::now());
+        $user->resetToken = $hash;
+        $user->save();
+
+        return $hash;
+
+    }
+
+    function reset(Request $request) {
+
+        $name = $request->name;
+        $password = $request->password;
+
+        DB::table('user')->where('name', '=', $name)->update(['password' => $password]);
+        return "OK";
+    }
 }

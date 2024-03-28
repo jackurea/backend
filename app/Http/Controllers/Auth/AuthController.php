@@ -31,5 +31,11 @@ class AuthController extends Controller
         return $this->authRepo->register($request);
     }
 
+    function forget(Request $request) {
+        return $this->authRepo->forget($request);
+    }
 
+    function reset(Request $request) {
+        return $this->authRepo->reset($request);
+    }
 }
