@@ -21,9 +21,9 @@ class AuthRepository {
         $user = new $user;
         $name = $request->name;
 
-        $data = $user->where('name', '=', $name)->select('name', 'password')->get(); 
+        $data = $user->where('name', '=', $name)->select('name', 'password', 'resetToken')->get(); 
         if(!empty($data) && count($data) != 0)
-            return "OK";
+            return $data[0]->resetToken;
         return "FAIL";
     }
 
@@ -32,7 +32,9 @@ class AuthRepository {
         $user = new $user;
         $user->name = $request->name;
         $user->password = $request->password;
-        $user->role = '12';
+        $hash = md5($request->name . Carbon::now());
+        $user->resetToken = $hash;
+        $user->role = 'Admin';
 
 //        DB::transaction(function() use ($user) {
             $user->save();
@@ -41,12 +43,10 @@ class AuthRepository {
     }
 
     function forget(Request $request) {
-        $user = self::MODEL;
-        $user = new $user;
-        $user->name = $request->name;
+        $name = $request->name;
         $hash = md5($request->name . Carbon::now());
-        $user->resetToken = $hash;
-        $user->save();
+
+        DB::table('user')->where('name', '=', $name)->update(['resetToken' => $hash]);
 
         return $hash;
 
