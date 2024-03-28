@@ -36,6 +36,7 @@ class AuthRepository {
 //        DB::transaction(function() use ($user) {
             $user->save();
 //        });
+        return "OK";
     }
 
 }

@@ -16,9 +16,12 @@ class AuthController extends Controller
 
     function login(Request $request) {
         $data = $this->authRepo->login($request);
-        return response($data)->withHeaders([
-            'Content-Type' => 'application/json',
-            'Access-Control-Allow-Origin' => '*']);
+        return response($data)        
+        ->header('Access-Control-Allow-Origin', '*')
+        ->header('Access-Control-Allow-Methods', '*')
+        ->header('Access-Control-Allow-Credentials', true)
+        ->header('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type,X-Token-Auth,Authorization')
+        ->header('Accept', 'application/json');
     }
 
     function register(Request $request) {
